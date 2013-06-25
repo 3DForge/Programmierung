@@ -1,0 +1,248 @@
+using UnityEngine;
+using System.Collections;
+
+
+public class KameraMovment :MonoBehaviour{
+  public float movespeed = 50;
+	public Transform kamera; 
+	public float scrollspeed = 100;
+	
+	//welche keys sind gedrückt?
+	private bool _left =false;
+	private bool _right = false;
+	private bool _up = false;
+	private bool _down = false;
+	private bool _scroll_in = false;
+	private bool _scroll_out = false;
+	//wo darf sich die kamera befinden?
+	public int minX = 0;
+	public int minZ = 0;
+	public int maxX = 200;
+	public int maxZ = 200;
+	public int maxY = 150;
+	public int minY = 50;
+	
+	// keys für alle richtungen
+	KeyCode _key_up;
+	KeyCode _key_down;
+	KeyCode _key_left;
+	KeyCode _key_right;
+	
+		#region "Setter / Getter / Konstruktor"
+	void setKeys(KeyCode up,KeyCode down,KeyCode left, KeyCode right){
+		_key_up = up;
+		_key_right = right;
+		_key_left = left;
+		_key_down = down;
+	}
+	
+	 public KeyCode Key_up
+    {
+        set { this._key_up = value; }
+        get { return this._key_up; }
+    }
+	
+	 public KeyCode Key_down
+    {
+        set { this._key_down = value; }
+        get { return this._key_down; }
+    }
+	
+	 public KeyCode Key_left
+    {
+        set { this._key_left = value; }
+        get { return this._key_left; }
+    }
+	
+	 public KeyCode Key_right
+    {
+        set { this._key_right = value; }
+        get { return this._key_right; }
+    }
+	
+	  public KameraMovment(KeyCode up,KeyCode down,KeyCode left, KeyCode right)
+    {
+        _key_up = up;
+		_key_right = right;
+		_key_left = left;
+		_key_down = down;
+    }
+	
+	public KameraMovment(){
+	_key_up = KeyCode.UpArrow;
+	_key_down = KeyCode.DownArrow;
+	_key_left = KeyCode.LeftArrow;
+	_key_right = KeyCode.RightArrow;
+	}
+	#endregion
+	
+	// Use this for initialization
+	void Awake(){
+		kamera = GameObject.FindGameObjectWithTag("kamera_emty").transform;
+	}
+	
+	
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+		checkkeys();
+		MoveManager();
+	}
+
+	void MoveKamera(string directioncode)
+	{
+		if (directioncode == "right")
+		{
+			if (kamera.position.x < maxX)
+			{
+			kamera.position += kamera.right*movespeed *Time.deltaTime;
+			}
+		}
+		else if (directioncode == "left")
+		{	
+			if (kamera.position.x > minX)
+			{
+			kamera.position += kamera.right*(0-movespeed) *Time.deltaTime;
+			}
+		}
+		else if (directioncode == "up")
+		{	
+			if (kamera.position.z < maxZ)
+			{
+			kamera.position += kamera.forward*movespeed *Time.deltaTime;
+			}
+		}
+		else if (directioncode == "down")
+		{	
+			if (kamera.position.z > minZ)
+			{
+			kamera.position += kamera.forward*(0-movespeed) *Time.deltaTime;
+			}
+		}
+		else if (directioncode == "scroll_in")
+		{	
+			if (kamera.position.y > minY)
+			{
+			kamera.position += kamera.up*scrollspeed *Time.deltaTime;
+			}
+		}
+		else if (directioncode == "scroll_out")
+		{	
+			if (kamera.position.y < maxY)
+			{
+			kamera.position += kamera.up*(0-scrollspeed) *Time.deltaTime;
+			}
+		}
+			
+	}
+	
+	void checkkeys(){
+		//welche keys sind gedrückt?
+		if (Input.GetKeyDown(_key_left) )
+		{
+			_left = true;
+		}
+		else if (Input.GetKeyUp(_key_left))
+		{
+			_left = false;
+		}
+		
+			
+		 if (Input.GetKeyDown(_key_right))
+		{
+			_right = true;
+		}
+		else if (Input.GetKeyUp(_key_right))
+		{
+			_right = false;
+		}
+		
+		
+		 if (Input.GetKeyDown(_key_up))
+		{
+			_up = true;
+		}
+		else if (Input.GetKeyUp(_key_up))
+		{
+			_up = false;
+		}
+		
+		
+			 if (Input.GetKeyDown(_key_down))
+		{
+			_down = true;
+		}
+		else if (Input.GetKeyUp(_key_down))
+		{
+			_down = false;
+		}
+		
+		 if (Input.GetAxis("Mouse ScrollWheel") > 0)
+		{
+			_scroll_in = true;
+		}
+		else if (Input.GetAxis("Mouse ScrollWheel")== 0)
+		{
+			_scroll_in = false;
+		}
+		
+		 if (Input.GetAxis("Mouse ScrollWheel")< 0)
+		{
+			_scroll_out = true;
+		}
+		else if (Input.GetAxis("Mouse ScrollWheel")== 0)
+		{
+			_scroll_out = false;
+		}
+		
+		
+	}
+	
+	void MoveManager(){
+		if ((_right == true)&& (_left == true))
+		{
+		//nichts machen	
+		}
+		else if (_left == true)
+		{
+			MoveKamera("left");
+		}
+		else if (_right == true) 
+		{
+			MoveKamera("right");
+		}
+		
+		if ((_up == true)&& (_down == true))
+		{
+		//nichts machen	
+		}
+		else if (_up == true)
+		{
+			MoveKamera("up");
+		}
+		else if (_down == true) 
+		{
+			MoveKamera("down");
+		}
+		
+		if ((_scroll_in == true)&& (_scroll_out == true))
+		{
+		//nichts machen	
+		}
+		else if (_scroll_in == true)
+		{
+			MoveKamera("scroll_in");
+		}
+		else if (_scroll_out == true) 
+		{
+			MoveKamera("scroll_out");
+		}
+		
+	}
+	
+	
+}
