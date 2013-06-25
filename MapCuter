@@ -1,0 +1,61 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+
+
+public class MapCuter : MonoBehaviour {
+  //Achtung: Map umbedingt folgendermaßen anlegen:  0:0 - mapsize_X: mapsize_Z mapanlegen 
+	
+public float blocksize = 25.0f;// wie groß werden die blöcke in die map eingeteilt wird? z.B 25 * 25
+public int mapsize_X = 600; //größe der map auf x achse
+public int mapsize_Z = 600;//größe der map auf z achse
+public	List<List<Block>> blocklist = new List<List<Block>>(); //speciher alle Blöcke
+            
+	void Awake(){
+	
+	}
+	
+	// Use this for initialization
+	void Start () {
+	Set_bockarray();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		SetGrid();
+	}
+	
+	void SetGrid(){//setzt gitterraster über map
+
+		for  (int i = 0; i <= mapsize_X; i+= (int)blocksize)
+			{
+			   Debug.DrawLine ( new Vector3(i,1,0),new Vector3 (i, 1, mapsize_Z), Color.red);
+		}
+		for  (int i = 0; i <= mapsize_Z; i+= (int)blocksize)
+			{
+			   Debug.DrawLine ( new Vector3(0,1,i),new Vector3 (mapsize_Z, 1, i), Color.red);
+			}
+		
+		
+		
+	}
+	
+	void Set_bockarray(){
+		//füllt blockarray mit kordinaten
+
+      
+		
+		
+		for (int blockcnt_x = 0; blockcnt_x <= (int)(mapsize_X/blocksize); blockcnt_x++)
+		{
+			  blocklist.Add(new List<Block>());
+			for (int blockcnt_z = 0; blockcnt_z <= (int)(mapsize_Z/blocksize); blockcnt_z++)
+			{
+				blocklist[blockcnt_x].Add(new Block(new Vector3((float)(blockcnt_x*blocksize-blocksize/2),1,(float)(blockcnt_z*blocksize-blocksize))));
+			}
+		}
+		
+	}
+}
+
