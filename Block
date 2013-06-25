@@ -1,0 +1,55 @@
+using UnityEngine;
+using System.Collections;
+
+public class Block : MonoBehaviour {
+  // Diese Klasse beschreibt einen Spielfeldblock
+	
+	 Vector3 _position; //Mittelpunkt des Blockes,worauf tower stehen soll
+	GameObject _tower_on_block; // gameobejct(Tower), das auf diesem Block liegt
+	
+	#region "Setter / Getter / Konstruktor"
+	
+	 public Vector3 Position
+    {
+        //set the position
+        set { this._position = value; }
+        //get the position
+        get { return this._position; }
+    }
+	
+	 public GameObject Tower_on_Block
+    {
+        //set the _tower_on_block
+        set { 
+			this._tower_on_block = value;
+			}
+        //get the _tower_on_block
+        get {
+			return this._tower_on_block; }
+   			 }
+	public Block(){}
+	public Block(Vector3 Position){_position = Position;}
+	public Block(GameObject tower_on_block){_tower_on_block = tower_on_block;}
+	public Block(Vector3 Position,GameObject tower_on_block){_position = Position;_tower_on_block = tower_on_block;}
+	
+	#endregion
+	
+	// Use this for initialization
+	void Start () {
+	}
+	
+	bool tower_here(){
+		//ist ein tower auf diesem block? wenn ja dann tower_here = true
+		
+		if (_tower_on_block != null)
+		{
+			return false;
+		}
+		else
+		{
+		//nichts gefunden
+		return false;
+		}
+	}
+	
+}
